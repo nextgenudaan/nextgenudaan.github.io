@@ -46,12 +46,14 @@
       const leadSourceOther = document.getElementById('leadSourceOther').value;
       const whatTheyDo = document.getElementById('whatTheyDo').value;
       const whyWantToJoin = document.getElementById('whyWantToJoin').value;
-      const formMessage = document.getElementById('formMessage');
 
       let finalLeadSource = leadSource;
       if (leadSource === 'others') {
         finalLeadSource = `Others: ${leadSourceOther}`;
       }
+
+      // Show loading state
+      showLoading(true);
 
       try {
         await addDoc(collection(db, 'joinRequests'), {
@@ -66,15 +68,17 @@
           whyWantToJoin: whyWantToJoin,
           timestamp: serverTimestamp()
         });
-        formMessage.textContent = 'Your request has been submitted successfully!';
-        formMessage.classList.remove('text-red-500');
-        formMessage.classList.add('text-green-300');
+
+        showLoading(false);
+        showMessage('🎉 Your request has been submitted successfully! We\'ll get back to you soon.', true);
         document.getElementById('joinForm').reset();
+        document.getElementById('otherFieldContainer').classList.add('hidden');
+        document.getElementById('leadSourceOther').required = false;
+
       } catch (error) {
         console.error("Error writing document: ", error);
-        formMessage.textContent = 'Error submitting your request. Please try again.';
-        formMessage.classList.remove('text-green-300');
-        formMessage.classList.add('text-red-500');
+        showLoading(false);
+        showMessage('❌ Error submitting your request. Please try again.', false);
       }
     };
   </script>
@@ -200,51 +204,104 @@
       <div class="rounded-xl overflow-hidden">
         <!-- Replaced Google Form with a custom form for Firebase integration -->
         <form id="joinForm" class="space-y-4" onsubmit="submitJoinForm(event)">
-          <input type="text" id="name" placeholder="Your Name"
-            class="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-400"
-            required />
-          <input type="tel" id="phone" placeholder="Your Mobile Number"
-            class="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-400"
-            required />
-          <input type="email" id="email" placeholder="Your Email"
-            class="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-400"
-            required />
-          <input type="number" id="age" placeholder="Your Age" min="18" max="80"
-            class="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-400"
-            required />
-          <input type="text" id="instagramId" placeholder="Your Instagram ID"
-            class="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-400" />
-          <input type="text" id="location" placeholder="Your Location (City, State)"
-            class="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-400"
-            required />
-          <div class="relative">
-            <select id="leadSource"
-              class="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-400"
-              required>
-              <option value="" disabled selected>Where did you hear about us?</option>
-              <option value="Instagram">Instagram</option>
-              <option value="WhatsApp">WhatsApp</option>
-              <option value="Referral">Referral</option>
-              <option value="Event">Event</option>
-              <option value="others">Others - Please Specify</option>
-            </select>
-            <div class="absolute inset-y-0 right-0 flex items-center px-2 text-white">
-              <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-              </svg>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Name -->
+            <div>
+              <input type="text" id="name" placeholder="Your Name"
+                class="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all duration-300"
+                required />
+            </div>
+
+            <!-- Phone -->
+            <div>
+              <input type="tel" id="phone" placeholder="Your Mobile Number"
+                class="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all duration-300"
+                required />
+            </div>
+
+            <!-- Email -->
+            <div>
+              <input type="email" id="email" placeholder="Your Email"
+                class="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all duration-300"
+                required />
+            </div>
+
+            <!-- Age -->
+            <div>
+              <input type="number" id="age" placeholder="Your Age" min="18" max="80"
+                class="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all duration-300"
+                required />
+            </div>
+
+            <!-- Instagram ID -->
+            <div>
+              <input type="text" id="instagramId" placeholder="Your Instagram ID"
+                class="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all duration-300" />
+            </div>
+
+            <!-- Location -->
+            <div>
+              <input type="text" id="location" placeholder="Your Location (City, State)"
+                class="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all duration-300"
+                required />
+            </div>
+
+            <!-- Lead Source -->
+            <div class="relative">
+              <select id="leadSource"
+                class="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all duration-300 appearance-none cursor-pointer"
+                required>
+                <option value="" disabled selected>Where did you hear about us?</option>
+                <option value="Instagram" class="bg-gray-800">Instagram</option>
+                <option value="WhatsApp" class="bg-gray-800">WhatsApp</option>
+                <option value="Referral" class="bg-gray-800">Referral</option>
+                <option value="Event" class="bg-gray-800">Event</option>
+                <option value="others" class="bg-gray-800">Others - Please Specify</option>
+              </select>
+              <div class="absolute inset-y-0 right-0 flex items-center px-4 text-white pointer-events-none">
+                <svg class="fill-current h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                  <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                </svg>
+              </div>
+            </div>
+
+            <!-- What They Do -->
+            <div>
+              <input type="text" id="whatTheyDo" placeholder="What do you do?"
+                class="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all duration-300" />
             </div>
           </div>
-          <input type="text" id="leadSourceOther" placeholder="Please specify where you heard about us"
-            class="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-400 hidden" />
-          <input type="text" id="whatTheyDo" placeholder="What do you do?"
-            class="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-400" />
-          <textarea id="whyWantToJoin" placeholder="Why do you want to join NextGen Udaan?" rows="4"
-            class="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-400"
-            required></textarea>
-          <button type="submit"
-            class="w-full bg-green-400 hover:bg-green-300 text-blue-900 font-bold px-8 py-3 rounded-2xl shadow-lg transition-transform transform hover:scale-105 duration-300 ease-in-out mt-4">Submit
-            Request</button>
-          <p id="formMessage" class="text-center mt-4 text-sm"></p>
+
+          <!-- Lead Source Other (Hidden by default) -->
+          <div id="otherFieldContainer" class="hidden transition-all duration-300">
+            <input type="text" id="leadSourceOther" placeholder="Please specify where you heard about us"
+              class="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all duration-300" />
+          </div>
+
+          <!-- Why Want to Join -->
+          <div>
+            <textarea id="whyWantToJoin" placeholder="Why do you want to join NextGen Udaan?" rows="2"
+              class="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all duration-300 resize-none"
+              required></textarea>
+          </div>
+
+          <button type="submit" id="submitBtn"
+            class="w-full bg-green-400 hover:bg-green-300 text-blue-900 font-bold px-8 py-3 rounded-2xl shadow-lg transition-transform transform hover:scale-105 duration-300 ease-in-out mt-4 relative">
+            <span id="submitText">Submit Request</span>
+            <span id="loadingText" class="hidden flex items-center justify-center">
+              <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-blue-900" xmlns="http://www.w3.org/2000/svg" fill="none"
+                viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                </path>
+              </svg>
+              Submitting...
+            </span>
+          </button>
+          <div class="text-center min-h-[24px]">
+            <p id="formMessage" class="text-sm font-medium transition-all duration-300 opacity-0"></p>
+          </div>
         </form>
       </div>
     </div>
@@ -674,16 +731,54 @@
 
     // Show/hide leadSourceOther based on leadSource selection
     document.getElementById('leadSource').addEventListener('change', function () {
-      const leadSourceOtherInput = document.getElementById('leadSourceOther');
+      const otherContainer = document.getElementById('otherFieldContainer');
+      const otherInput = document.getElementById('leadSourceOther');
       if (this.value === 'others') {
-        leadSourceOtherInput.classList.remove('hidden');
-        leadSourceOtherInput.setAttribute('required', 'true');
+        otherContainer.classList.remove('hidden');
+        otherInput.required = true;
       } else {
-        leadSourceOtherInput.classList.add('hidden');
-        leadSourceOtherInput.removeAttribute('required');
-        leadSourceOtherInput.value = ''; // Clear value if hidden
+        otherContainer.classList.add('hidden');
+        otherInput.required = false;
+        otherInput.value = ''; // Clear value if hidden
       }
     });
+
+    function showLoading(show) {
+      const submitText = document.getElementById('submitText');
+      const loadingText = document.getElementById('loadingText');
+      const submitBtn = document.getElementById('submitBtn');
+
+      if (show) {
+        submitText.classList.add('hidden');
+        loadingText.classList.remove('hidden');
+        submitBtn.disabled = true;
+        submitBtn.classList.add('opacity-75', 'cursor-not-allowed');
+        submitBtn.classList.remove('hover:scale-105');
+      } else {
+        submitText.classList.remove('hidden');
+        loadingText.classList.add('hidden');
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('opacity-75', 'cursor-not-allowed');
+        submitBtn.classList.add('hover:scale-105');
+      }
+    }
+
+    function showMessage(message, isSuccess) {
+      const formMessage = document.getElementById('formMessage');
+      formMessage.textContent = message;
+      formMessage.classList.remove('text-green-300', 'text-red-400', 'opacity-0');
+      formMessage.classList.add(isSuccess ? 'text-green-300' : 'text-red-400', 'opacity-100');
+
+      // Auto-hide message after 5 seconds
+      setTimeout(() => {
+        formMessage.classList.add('opacity-0');
+        setTimeout(() => {
+          if (formMessage.classList.contains('opacity-0')) {
+            formMessage.textContent = '';
+          }
+        }, 300);
+      }, 5000);
+    }
 
 
 
