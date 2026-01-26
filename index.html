@@ -15,10 +15,15 @@
 </head>
 
 <body class="selection:bg-blue-100 selection:text-blue-900">
+  <!-- Global Page Loader -->
+  <div id="globalLoader">
+    <div class="loader-spinner"></div>
+  </div>
   <!-- Custom Global Particle Canvas -->
   <canvas id="particleCanvas"></canvas>
 
-  <header class="w-full fixed top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100 transition-all duration-300">
+  <header
+    class="w-full fixed top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100 transition-all duration-300">
     <div class="max-w-6xl mx-auto px-6 py-5 flex justify-between items-center w-full">
       <a href="#home" class="text-xl font-bold tracking-tight text-gray-900 hover:text-blue-600 transition-colors">
         NextGen Udaan
@@ -27,14 +32,16 @@
         <a href="#home" class="hover:text-black transition-colors">Home</a>
         <a href="#about" class="hover:text-black transition-colors">About</a>
         <a href="#why-join" class="hover:text-black transition-colors">Why Join</a>
-        <a href="#formDialog" class="hover:text-black transition-colors" onclick="event.preventDefault(); openDialog('formDialog');">Join Us</a>
+        <a href="#footer" class="hover:text-black transition-colors">Contact Us</a>
       </nav>
       <div class="flex items-center space-x-3">
         <button onclick="openDialog('formDialog')" class="hidden md:inline-block btn-pill btn-primary shadow-lg">
           Join Now
         </button>
         <button id="mobileMenuButton" class="md:hidden text-gray-900 text-2xl focus:outline-none">
-          <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+          <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
         </button>
       </div>
     </div>
@@ -49,7 +56,7 @@
     <a href="#formDialog" class="hover:text-blue-600"
       onclick="event.preventDefault(); openDialog('formDialog'); closeMobileMenu();">Join Us</a>
     <a href="#footer" class="hover:text-blue-600"
-      onclick="event.preventDefault(); smoothScroll('footer'); closeMobileMenu();">Contact</a>
+      onclick="event.preventDefault(); smoothScroll('footer'); closeMobileMenu();">Contact Us</a>
     <button onclick="openDialog('formDialog'); closeMobileMenu();"
       class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-xl shadow-lg transition-transform transform hover:scale-105 duration-300 ease-in-out">Join
       Now</button>
@@ -62,7 +69,8 @@
       <h2 class="text-3xl font-bold mb-4 text-center">Why Fly With Us?</h2>
       <p class="text-lg leading-relaxed text-center text-slate-600">
         NextGen Udaan empowers ambitious hustlers across India to build a future‑proof digital business with
-        <span class="font-semibold text-blue-600">zero investment</span>, ethical marketing, and unstoppable community energy
+        <span class="font-semibold text-blue-600">zero investment</span>, ethical marketing, and unstoppable community
+        energy
         ✨.<br><br>
         You bring the hunger. We bring the roadmap.
       </p>
@@ -71,7 +79,8 @@
 
   <div id="formDialog"
     class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 px-4">
-    <div class="clean-card bg-white text-slate-800 rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] p-6 relative overflow-y-auto">
+    <div
+      class="clean-card bg-white text-slate-800 rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] p-6 relative overflow-y-auto">
       <button onclick="closeDialog('formDialog')"
         class="absolute top-3 right-4 text-slate-400 text-xl font-bold hover:text-red-500">&times;</button>
       <h3 class="text-2xl font-semibold mb-6 text-blue-600 text-center">Request Your Free Onboarding Call</h3>
@@ -183,20 +192,31 @@
 
   <main id="home" class="w-full min-h-screen flex flex-col items-center pt-20">
     <!-- Hero Section -->
-    <section class="relative w-full min-h-screen flex flex-col items-center justify-center p-6 text-center overflow-hidden">
-      
+    <section
+      class="relative w-full min-h-screen flex flex-col items-center justify-center p-6 text-center overflow-hidden">
+
       <div class="relative z-10 w-full">
+        <!-- Dynamic News Highlight -->
+        <div class="news-container">
+          <div class="news-pill" onclick="openDialog('formDialog')">
+            <span class="news-badge">New</span>
+            <span class="news-text" id="newsTicker">Launching NextGen 2.0! Join the Revolution 🚀</span>
+            <span class="news-arrow">→</span>
+          </div>
+        </div>
+
         <h1 class="hero-title mb-6 max-w-4xl mx-auto">
           Soch badal, Zindagi badal <br>
           <span id="typewriter" class="typing-cursor text-google-blue"></span>
         </h1>
-        
+
         <p class="text-xl md:text-2xl text-gray-500 max-w-2xl mx-auto mb-10 font-medium">
           Next-Generation Direct Selling & Digital Business Ecosystem.
         </p>
-        
+
         <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <button onclick="openDialog('formDialog')" class="btn-pill btn-primary text-lg px-8 py-4 shadow-xl hover:shadow-2xl">
+          <button onclick="openDialog('formDialog')"
+            class="btn-pill btn-primary text-lg px-8 py-4 shadow-xl hover:shadow-2xl">
             Start Your Journey
           </button>
           <button onclick="smoothScroll('about')" class="btn-pill btn-secondary text-lg px-8 py-4">
@@ -208,7 +228,8 @@
 
     <!-- About NextGen Udaan -->
     <section id="about" class="w-full max-w-6xl mx-auto px-6 py-20">
-      <h2 class="text-4xl font-bold text-center mb-6 text-gray-900">About <span class="text-blue-600">NextGen Udaan</span></h2>
+      <h2 class="text-4xl font-bold text-center mb-6 text-gray-900">About <span class="text-blue-600">NextGen
+          Udaan</span></h2>
       <p class="text-center text-slate-600 max-w-3xl mx-auto mb-8">
         We are a digital-first community helping India build ethical, future-proof businesses. Our mission is to
         enable growth through systems, training, and mentorship. Our vision is to make entrepreneurship accessible to
@@ -216,22 +237,28 @@
       </p>
       <div class="grid md:grid-cols-3 gap-8 mb-16">
         <div class="clean-card p-8 text-center">
-          <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">🎯</div>
+          <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">🎯
+          </div>
           <h3 class="text-xl font-bold mb-3 text-gray-900">Mission</h3>
-          <p class="text-gray-600 leading-relaxed">Empower every hustler with tools, training, and support to thrive.</p>
+          <p class="text-gray-600 leading-relaxed">Empower every hustler with tools, training, and support to thrive.
+          </p>
         </div>
         <div class="clean-card p-8 text-center">
-          <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">👁️</div>
+          <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">👁️
+          </div>
           <h3 class="text-xl font-bold mb-3 text-gray-900">Vision</h3>
-          <p class="text-gray-600 leading-relaxed">A nationwide network of ethical digital entrepreneurs creating impact.</p>
+          <p class="text-gray-600 leading-relaxed">A nationwide network of ethical digital entrepreneurs creating
+            impact.</p>
         </div>
         <div class="clean-card p-8 text-center">
-          <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">🤝</div>
+          <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">🤝
+          </div>
           <h3 class="text-xl font-bold mb-3 text-gray-900">Values</h3>
-          <p class="text-gray-600 leading-relaxed">Integrity, community, growth mindset, and service-first leadership.</p>
+          <p class="text-gray-600 leading-relaxed">Integrity, community, growth mindset, and service-first leadership.
+          </p>
         </div>
       </div>
-      
+
       <div class="grid md:grid-cols-2 gap-8 items-center">
         <div class="clean-card p-8 border-l-4 border-red-500">
           <h4 class="text-xl font-bold mb-4 text-gray-900">Traditional MLM ❌</h4>
@@ -261,9 +288,11 @@
       <h2 class="text-3xl font-bold text-center mb-12 text-gray-900">Success Stories</h2>
       <div class="grid md:grid-cols-2 gap-8 w-full max-w-5xl mx-auto">
         <div class="clean-card p-8">
-          <p class="mb-6 text-lg italic text-gray-600">"Joined with zero knowledge and now I'm earning 10k/month. NextGen Udaan changed my life!"</p>
+          <p class="mb-6 text-lg italic text-gray-600">"Joined with zero knowledge and now I'm earning 10k/month.
+            NextGen Udaan changed my life!"</p>
           <div class="flex items-center space-x-3">
-            <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">R</div>
+            <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">R
+            </div>
             <div>
               <h4 class="font-bold text-gray-900">Riya Sharma</h4>
               <p class="text-sm text-gray-500">Digital Entrepreneur</p>
@@ -271,9 +300,11 @@
           </div>
         </div>
         <div class="clean-card p-8">
-          <p class="mb-6 text-lg italic text-gray-600">"I started for health, stayed for the community. So grateful for this journey!"</p>
+          <p class="mb-6 text-lg italic text-gray-600">"I started for health, stayed for the community. So grateful for
+            this journey!"</p>
           <div class="flex items-center space-x-3">
-            <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold">A</div>
+            <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold">A
+            </div>
             <div>
               <h4 class="font-bold text-gray-900">Aman Gupta</h4>
               <p class="text-sm text-gray-500">Team Leader</p>
@@ -286,25 +317,34 @@
 
     <!-- Why Join Us Section -->
     <section id="why-join" class="w-full max-w-6xl mx-auto px-6 py-20">
-      <h2 class="text-4xl font-bold text-center mb-16 text-gray-900">Why Join <span class="text-google-blue">NextGen Udaan</span>?</h2>
+      <h2 class="text-4xl font-bold text-center mb-16 text-gray-900">Why Join <span class="text-google-blue">NextGen
+          Udaan</span>?</h2>
       <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 w-full">
         <div class="clean-card p-8 text-center hover:-translate-y-2 transition-transform">
-          <div class="w-16 h-16 mx-auto mb-6 bg-red-50 text-red-500 rounded-full flex items-center justify-center text-3xl">💰</div>
+          <div
+            class="w-16 h-16 mx-auto mb-6 bg-red-50 text-red-500 rounded-full flex items-center justify-center text-3xl">
+            💰</div>
           <h4 class="text-lg font-bold mb-3 text-gray-900">Valid Income</h4>
           <p class="text-sm text-gray-600">Diverse income streams from sales and bonuses.</p>
         </div>
         <div class="clean-card p-8 text-center hover:-translate-y-2 transition-transform">
-          <div class="w-16 h-16 mx-auto mb-6 bg-blue-50 text-blue-500 rounded-full flex items-center justify-center text-3xl">🎓</div>
+          <div
+            class="w-16 h-16 mx-auto mb-6 bg-blue-50 text-blue-500 rounded-full flex items-center justify-center text-3xl">
+            🎓</div>
           <h4 class="text-lg font-bold mb-3 text-gray-900">Digital Training</h4>
           <p class="text-sm text-gray-600">Master modern skills via webinars & courses.</p>
         </div>
         <div class="clean-card p-8 text-center hover:-translate-y-2 transition-transform">
-          <div class="w-16 h-16 mx-auto mb-6 bg-yellow-50 text-yellow-500 rounded-full flex items-center justify-center text-3xl">🤝</div>
+          <div
+            class="w-16 h-16 mx-auto mb-6 bg-yellow-50 text-yellow-500 rounded-full flex items-center justify-center text-3xl">
+            🤝</div>
           <h4 class="text-lg font-bold mb-3 text-gray-900">Community</h4>
           <p class="text-sm text-gray-600">Supportive network of like-minded leaders.</p>
         </div>
         <div class="clean-card p-8 text-center hover:-translate-y-2 transition-transform">
-          <div class="w-16 h-16 mx-auto mb-6 bg-blue-50 text-blue-500 rounded-full flex items-center justify-center text-3xl">🚀</div>
+          <div
+            class="w-16 h-16 mx-auto mb-6 bg-blue-50 text-blue-500 rounded-full flex items-center justify-center text-3xl">
+            🚀</div>
           <h4 class="text-lg font-bold mb-3 text-gray-900">Growth</h4>
           <p class="text-sm text-gray-600">Leadership and lifestyle transformation.</p>
         </div>
@@ -312,7 +352,8 @@
     </section>
 
     <!-- Business Opportunity Funnel Section -->
-    <section class="w-full max-w-6xl mt-14 px-6 py-10 rounded-3xl shadow-xl text-slate-800 border border-slate-100 mx-auto">
+    <section
+      class="w-full max-w-6xl mt-14 px-6 py-10 rounded-3xl shadow-xl text-slate-800 border border-slate-100 mx-auto">
       <h2 class="text-3xl font-bold text-center mb-10">📈 Your Growth Journey with <span class="text-blue-600">NextGen
           Udaan</span> 💙</h2>
       <div class="relative flex flex-col items-center">
@@ -387,11 +428,13 @@
     </section>
 
     <!-- FAQ Section -->
-    <section class="w-full max-w-6xl mt-14 px-6 py-10 rounded-3xl shadow-xl text-slate-800 border border-slate-100 mx-auto">
+    <section
+      class="w-full max-w-6xl mt-14 px-6 py-10 rounded-3xl shadow-xl text-slate-800 border border-slate-100 mx-auto">
       <h2 class="text-3xl font-bold text-center mb-10 text-slate-900">❓ Frequently Asked Questions</h2>
       <div class="space-y-4 max-w-3xl mx-auto">
         <div class="glass rounded-2xl p-5">
-          <button class="w-full flex justify-between items-center text-xl font-semibold text-slate-900" onclick="toggleFAQ('faq1')">
+          <button class="w-full flex justify-between items-center text-xl font-semibold text-slate-900"
+            onclick="toggleFAQ('faq1')">
             What is NextGen Udaan?
             <span id="arrow-faq1" class="transform transition-transform duration-300">▼</span>
           </button>
@@ -402,7 +445,8 @@
         </div>
 
         <div class="glass rounded-2xl p-5">
-          <button class="w-full flex justify-between items-center text-xl font-semibold text-slate-900" onclick="toggleFAQ('faq2')">
+          <button class="w-full flex justify-between items-center text-xl font-semibold text-slate-900"
+            onclick="toggleFAQ('faq2')">
             How do I join?
             <span id="arrow-faq2" class="transform transition-transform duration-300">▼</span>
           </button>
@@ -413,7 +457,8 @@
         </div>
 
         <div class="glass rounded-2xl p-5">
-          <button class="w-full flex justify-between items-center text-xl font-semibold text-slate-900" onclick="toggleFAQ('faq3')">
+          <button class="w-full flex justify-between items-center text-xl font-semibold text-slate-900"
+            onclick="toggleFAQ('faq3')">
             What income sources are possible?
             <span id="arrow-faq3" class="transform transition-transform duration-300">▼</span>
           </button>
@@ -424,7 +469,8 @@
         </div>
 
         <div class="glass rounded-2xl p-5">
-          <button class="w-full flex justify-between items-center text-xl font-semibold text-slate-900" onclick="toggleFAQ('faq4')">
+          <button class="w-full flex justify-between items-center text-xl font-semibold text-slate-900"
+            onclick="toggleFAQ('faq4')">
             How do I get training?
             <span id="arrow-faq4" class="transform transition-transform duration-300">▼</span>
           </button>

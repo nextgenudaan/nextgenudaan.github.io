@@ -111,8 +111,8 @@ window.submitJoinForm = async function (event) {
     showLoading(false);
     showMessage('🎉 Request submitted! We will contact you soon.', true);
     document.getElementById('joinForm').reset();
-    if(document.getElementById('otherFieldContainer')) {
-        document.getElementById('otherFieldContainer').classList.add('hidden');
+    if (document.getElementById('otherFieldContainer')) {
+      document.getElementById('otherFieldContainer').classList.add('hidden');
     }
 
   } catch (error) {
@@ -156,8 +156,32 @@ function showMessage(message, isSuccess) {
 }
 
 // Event Listeners Initialization
+window.addEventListener('load', () => {
+  // Always start from top (Home) - Instant Snap
+  if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+  }
+
+  // Temporarily disable smooth scroll for instant reset
+  document.documentElement.style.scrollBehavior = 'auto';
+  window.scrollTo(0, 0);
+
+  // Restore smooth scroll after a brief delay
+  setTimeout(() => {
+    document.documentElement.style.scrollBehavior = '';
+  }, 100);
+
+  const loader = document.getElementById('globalLoader');
+  if (loader) {
+    // Small delay to ensure smooth transition
+    setTimeout(() => {
+      loader.classList.add('hidden-loader');
+    }, 500);
+  }
+});
+
 document.addEventListener('DOMContentLoaded', () => {
-    
+
   // Check for auto-open join modal parameter
   const urlParams = new URLSearchParams(window.location.search);
   if (urlParams.get('openJoin') === 'true') {
@@ -169,13 +193,15 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initialize Antigravity Features
   initTypewriter();
   loadParticles();
-  
+  initCloudMessages();
+  initNewsTicker();
+
   // Mobile Menu Button
   const mobileMenuButton = document.getElementById('mobileMenuButton');
   if (mobileMenuButton) {
-      mobileMenuButton.addEventListener('click', window.openMobileMenu);
+    mobileMenuButton.addEventListener('click', window.openMobileMenu);
   }
-  
+
   // Lead Source Change
   const leadSource = document.getElementById('leadSource');
   if (leadSource) {
@@ -188,7 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
       } else {
         otherContainer.classList.add('hidden');
         otherInput.required = false;
-        otherInput.value = ''; 
+        otherInput.value = '';
       }
     });
   }
@@ -199,12 +225,12 @@ function initTypewriter() {
   const words = ["Growth", "Freedom", "NextGen Udaan"];
   const el = document.getElementById('typewriter');
   if (!el) return;
-  
+
   let i = 0;
   let j = 0;
   let currentWord = "";
   let isDeleting = false;
-  
+
   function type() {
     currentWord = words[i];
     if (isDeleting) {
@@ -221,12 +247,116 @@ function initTypewriter() {
         isDeleting = true;
       }
     }
-    
+
     const speed = isDeleting ? 100 : 200;
     setTimeout(type, speed);
   }
-  
+
   type();
+}
+
+// Cloud Message System
+function initCloudMessages() {
+  const heroSection = document.querySelector('section.relative'); // Targeting the hero section
+  if (!heroSection) return;
+
+  const messages = [
+    { text: "Financial Freedom 💸", type: "blue" },
+    { text: "Be Your Own Boss 🚀", type: "green" },
+    { text: "Work from Home 🏠", type: "blue" },
+    { text: "Zero Investment 💰", type: "yellow" },
+    { text: "Free Mentorship 🤝", type: "red" },
+    { text: "Digital Business 💻", type: "blue" },
+    { text: "Passive Income 📈", type: "green" },
+    { text: "Travel the World ✈️", type: "yellow" },
+    { text: "Join the Community 💙", type: "blue" }
+  ];
+
+  function spawnCloud() {
+    // Only spawn if tab is active to save resources
+    if (document.hidden) return;
+
+    const msg = messages[Math.floor(Math.random() * messages.length)];
+    const el = document.createElement('div');
+    el.classList.add('cloud-message');
+
+    // Icon separation
+    const lastSpace = msg.text.lastIndexOf(' ');
+    const text = msg.text.substring(0, lastSpace);
+    const icon = msg.text.substring(lastSpace + 1);
+
+    el.innerHTML = `<span>${text}</span><span class="icon">${icon}</span>`;
+
+    // Random Position Logic
+    // Left Zone: 5% to 25% | Right Zone: 75% to 95%
+    const isLeft = Math.random() > 0.5;
+    const padding = 5; // padding from edge
+
+    let x;
+    if (isLeft) {
+      x = padding + Math.random() * 20; // 5% to 25%
+    } else {
+      x = 75 + Math.random() * 20; // 75% to 95%
+    }
+
+    const y = 20 + Math.random() * 60; // 20% to 80% vertical
+
+    el.style.left = `${x}%`;
+    el.style.top = `${y}%`;
+
+    // Add border color based on type (optional subtle hint)
+    // el.style.borderLeft = `3px solid var(--accent-${msg.type})`;
+
+    heroSection.appendChild(el);
+
+    // Remove after animation
+    setTimeout(() => {
+      el.remove();
+    }, 5000);
+  }
+
+  // Initial burst
+  setTimeout(() => spawnCloud(), 500);
+  setTimeout(() => spawnCloud(), 1500);
+
+  // Ongoing interval
+  setInterval(spawnCloud, 2500);
+}
+
+// News Ticker System
+function initNewsTicker() {
+  const newsElement = document.getElementById('newsTicker');
+  if (!newsElement) return;
+
+  const newsItems = [
+    "Launching NextGen 2.0! Join the Revolution 🚀",
+    "Free Mentorship Batch Starting Soon! 🎓",
+    "Top Earner of the Month: Riya Sharma 🏆",
+    "New Digital Tools Added to Dashboard 🛠️"
+  ];
+
+  let index = 0;
+
+  setInterval(() => {
+    // Fade out
+    newsElement.computedStyleMap.opacity = 0;
+    newsElement.parentElement.animate([
+      { transform: 'scale(1)' },
+      { transform: 'scale(0.95)' }
+    ], { duration: 300, fill: 'forwards' });
+
+    setTimeout(() => {
+      index = (index + 1) % newsItems.length;
+      newsElement.textContent = newsItems[index];
+
+      // Fade in
+      newsElement.parentElement.animate([
+        { transform: 'scale(0.95)' },
+        { transform: 'scale(1)' }
+      ], { duration: 300, fill: 'forwards' });
+    }, 300);
+
+  }, 4000); // Rotate every 4 seconds
 }
 
 // Custom Particle System (Grouped Wavy Water Style)
@@ -239,11 +369,11 @@ class Particle {
     this.vx = (Math.random() - 0.5) * 1.5;
     this.vy = (Math.random() - 0.5) * 1.5;
     this.size = Math.random() * 3 + 2; // Bigger (2px to 5px)
-    
+
     // Google Colors
     const colors = ["#4285F4", "#00ff44ff"];
     this.color = colors[Math.floor(Math.random() * colors.length)];
-    
+
     this.angle = Math.random() * Math.PI * 2;
     this.spinSpeed = (Math.random() - 0.5) * 0.04 + 0.015;
     this.baseRadius = Math.random() * 300 + 100; // Increased gap (Radius)
@@ -254,15 +384,15 @@ class Particle {
     if (active) {
       // Wavy circular logic around mouse
       this.angle += this.spinSpeed;
-      
+
       // Calculate wavy radius (water effect)
       const time = Date.now() * 0.002;
       const wave = Math.sin(this.angle * 5 + time + this.waveOffset) * 20;
       const targetRadius = this.baseRadius + wave;
-      
+
       const targetX = mouseX + Math.cos(this.angle) * targetRadius;
       const targetY = mouseY + Math.sin(this.angle) * targetRadius;
-      
+
       // Smoothly move towards the wavy orbit
       this.x += (targetX - this.x) * 0.05;
       this.y += (targetY - this.y) * 0.05;
@@ -270,7 +400,7 @@ class Particle {
       // Normal floating
       this.x += this.vx;
       this.y += this.vy;
-      
+
       // Bounce or wrap
       if (this.x < 0 || this.x > this.canvasWidth) this.vx *= -1;
       if (this.y < 0 || this.y > this.canvasHeight) this.vy *= -1;
@@ -295,16 +425,16 @@ let mouseActive = false;
 function initParticles() {
   canvas = document.getElementById('particleCanvas');
   if (!canvas) return;
-  
+
   ctx = canvas.getContext('2d');
   resizeCanvas();
-  
+
   particles = [];
   const particleCount = 200; // Adjusted for global view
   for (let i = 0; i < particleCount; i++) {
     particles.push(new Particle(canvas.width, canvas.height));
   }
-  
+
   // Track mouse globally across window
   window.addEventListener('mousemove', (e) => {
     // Relative to viewport works best for fixed canvas
@@ -312,7 +442,7 @@ function initParticles() {
     mouseY = e.clientY;
     mouseActive = true;
   });
-  
+
   window.addEventListener('mouseout', () => {
     mouseActive = false;
   });
@@ -327,12 +457,12 @@ function resizeCanvas() {
 
 function animate() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  
+
   particles.forEach(p => {
     p.update(mouseX, mouseY, mouseActive);
     p.draw(ctx);
   });
-  
+
   animationId = requestAnimationFrame(animate);
 }
 
