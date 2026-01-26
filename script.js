@@ -269,12 +269,64 @@ function initCloudMessages() {
     { text: "Digital Business 💻", type: "blue" },
     { text: "Passive Income 📈", type: "green" },
     { text: "Travel the World ✈️", type: "yellow" },
-    { text: "Join the Community 💙", type: "blue" }
+    { text: "Join the Community 💙", type: "blue" },
+    { text: "No Experience Needed ✨", type: "green" },
+    { text: "Earn While You Learn 📚", type: "red" },
+    { text: "Weekly Payouts 💵", type: "yellow" },
+    { text: "Flexible Timings ⏰", type: "blue" },
+    { text: "Networking 🌐", type: "green" },
+    { text: "Leadership Growth 🦁", type: "red" },
+    { text: "100% Online Work 📱", type: "blue" },
+    { text: "Student Friendly 🎓", type: "yellow" },
+    { text: "Secure Future 🔐", type: "green" }
   ];
 
   function spawnCloud() {
     // Only spawn if tab is active to save resources
     if (document.hidden) return;
+
+    // Retry logic to find non-overlapping space
+    let attempts = 0;
+    const maxAttempts = 10;
+    let x, y, isLeft;
+    let validPosition = false;
+
+    while (!validPosition && attempts < maxAttempts) {
+      attempts++;
+
+      // Random Position Logic
+      // Left Zone: 1% to 15% | Right Zone: 82% to 96%
+      isLeft = Math.random() > 0.5;
+
+      if (isLeft) {
+        x = 1 + Math.random() * 14; // 1% to 15%
+      } else {
+        x = 82 + Math.random() * 14; // 82% to 96%
+      }
+
+      y = 10 + Math.random() * 75; // 10% to 85% vertical
+
+      // Check collision with existing clouds
+      const existing = document.querySelectorAll('.cloud-message');
+      let collision = false;
+
+      existing.forEach(el => {
+        const exX = parseFloat(el.style.left);
+        const exY = parseFloat(el.style.top);
+
+        // Approximate box collision in percentages
+        // Width approx 18%, Height approx 12%
+        if (Math.abs(x - exX) < 18 && Math.abs(y - exY) < 12) {
+          collision = true;
+        }
+      });
+
+      if (!collision) {
+        validPosition = true;
+      }
+    }
+
+    if (!validPosition) return; // Skip spawning if crowded
 
     const msg = messages[Math.floor(Math.random() * messages.length)];
     const el = document.createElement('div');
@@ -287,25 +339,8 @@ function initCloudMessages() {
 
     el.innerHTML = `<span>${text}</span><span class="icon">${icon}</span>`;
 
-    // Random Position Logic
-    // Left Zone: 5% to 25% | Right Zone: 75% to 95%
-    const isLeft = Math.random() > 0.5;
-    const padding = 5; // padding from edge
-
-    let x;
-    if (isLeft) {
-      x = padding + Math.random() * 20; // 5% to 25%
-    } else {
-      x = 75 + Math.random() * 20; // 75% to 95%
-    }
-
-    const y = 20 + Math.random() * 60; // 20% to 80% vertical
-
     el.style.left = `${x}%`;
     el.style.top = `${y}%`;
-
-    // Add border color based on type (optional subtle hint)
-    // el.style.borderLeft = `3px solid var(--accent-${msg.type})`;
 
     heroSection.appendChild(el);
 
@@ -316,11 +351,12 @@ function initCloudMessages() {
   }
 
   // Initial burst
-  setTimeout(() => spawnCloud(), 500);
-  setTimeout(() => spawnCloud(), 1500);
+  setTimeout(() => spawnCloud(), 300);
+  setTimeout(() => spawnCloud(), 800);
+  setTimeout(() => spawnCloud(), 1400);
 
   // Ongoing interval
-  setInterval(spawnCloud, 2500);
+  setInterval(spawnCloud, 1200);
 }
 
 // News Ticker System
